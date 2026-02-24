@@ -1,0 +1,41 @@
+# Maintainer: Felix Xing <fxing@qnx.com>
+pkgname=libxcrypt
+pkgver=4.4.38
+pkgrel=1
+pkgdesc="Extended crypt library for descrypt, md5crypt, bcrypt, and others"
+url="https://github.com/besser82/libxcrypt"
+arch="all"
+license="LGPL-2.1"
+makedepends="perl autoconf automake"
+#options="!check"
+source="https://github.com/besser82/$pkgname/releases/download/v$pkgver/$pkgname-$pkgver.tar.xz
+        printf-null.patch
+"
+subpackages="$pkgname-doc $pkgname-dev"
+build() {
+    CPPFLAGS="$CPPFLAGS -DSA_RESTART=0" \
+    CFLAGS="$CFLAGS -Wno-undef -Os" \
+    ./configure \
+        --build=$CBUILD \
+        --host=$CHOST \
+        --prefix=/usr \
+        --enable-static \
+        --enable-hashes=strong,glibc \
+        --enable-obsolete-api=glibc \
+        --disable-failure-tokens
+
+    make
+}
+
+check(){
+    make check 
+}
+
+package() {
+    make DESTDIR="$pkgdir" install
+}
+
+sha512sums="
+66c6f7e69d64ec6d9cca5c240bcd056c4f2802aab84325bef5c3aff189a0f81bc0944f473cbde8fdcb12cad8a9d35599afb045a5bc4be577e1c67066555bc116  libxcrypt-4.4.38.tar.xz
+c26b16f5b27270926f0b724439f04b286fe485f21c3d39c3b63700976d697bbf6854bd7adabcfe6749b5f211b9a5d1cfc139700ba1a8aa9d5ab35dea630cdf82  printf-null.patch
+"
