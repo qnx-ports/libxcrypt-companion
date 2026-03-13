@@ -1,7 +1,7 @@
 # Maintainer: Felix Xing <fxing@qnx.com>
 pkgname=libxcrypt
 pkgver=4.4.38
-pkgrel=1
+pkgrel=${pkgrel:-0}
 pkgdesc="Extended crypt library for descrypt, md5crypt, bcrypt, and others"
 url="https://github.com/besser82/libxcrypt"
 arch="all"
@@ -35,6 +35,7 @@ package() {
     make DESTDIR="$pkgdir" install
 }
 
+options="$options ${DISABLE_CHECK:+!check}"
 sha512sums="
 66c6f7e69d64ec6d9cca5c240bcd056c4f2802aab84325bef5c3aff189a0f81bc0944f473cbde8fdcb12cad8a9d35599afb045a5bc4be577e1c67066555bc116  libxcrypt-4.4.38.tar.xz
 c26b16f5b27270926f0b724439f04b286fe485f21c3d39c3b63700976d697bbf6854bd7adabcfe6749b5f211b9a5d1cfc139700ba1a8aa9d5ab35dea630cdf82  printf-null.patch
